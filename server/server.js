@@ -1,41 +1,50 @@
+// IMPORT DEPENDENCIES
 const express = require("express")
+const bodyParser = require("body-parser")
 const { Sequelize, sequelize } = require('../database/models')
 
-// import routes
-const devRoute = require('./routes/dev')
-const app = express()
+// IMPORT ROUTES
+
+
+
 const port = process.env.PORT || 3030
 
+const app = express()
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
-const connectDB = async () => {
-    console.log('Connecting...')
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+    next();
+})
 
-    try {
-        await sequelize.authenticate();
-        console.log('Connection Successful Established.')
-    } catch(e) {
-        console.error(e);
-        process.exit(1);
-    }
-};
-
-(async () => {
-    await connectDB()
-    try {
-        app.listen(port, () => {
-            console.log(`server running on port: ${port} 
-                live at: http://localhost:${port}`
-                );
-        })
-    } catch(e) {
-        console.error(e);
-    }
-})();
-
-
-app.get('/', devRoute);
-
-app.get("/blog", (req, res) => {
-    res.send("blog it up baby");
+// TEST ROUTE
+app.get('/', (req, res) => {
+    res.send('Hello World!')
 });
+
+// CRUD ROUTES
+app.use('/users', require('./routes/users'))
+
+// HANDLE ERRORS
+app.use((err, req, res, next) => {
+    console.log(err);
+    const status = err.statusCode || 500;
+    const message = err.message;
+    res.status(status).json({ message: message });
+})
+
+
+// SYNC DATABASE
+sequelize.sync({ force: false })
+.then(() => {
+    console.log('Database Connected!')
+    app.listen(port, () => {
+        console.log(`server running on port: ${port} 
+            live at: http://localhost:${port}`
+                );
+    })
+})
+.catch(e => console.error(e))
