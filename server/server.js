@@ -1,8 +1,12 @@
 const express = require("express")
 const { Sequelize, sequelize } = require('../database/models')
 
+// import routes
+const devRoute = require('./routes/dev')
 const app = express()
 const port = process.env.PORT || 3030
+
+
 
 const connectDB = async () => {
     console.log('Connecting...')
@@ -30,9 +34,7 @@ const connectDB = async () => {
 })();
 
 
-app.get('/', (req, res) => {
-    res.send('hello');
-});
+app.get('/', devRoute);
 
 app.get("/blog", (req, res) => {
     res.send("blog it up baby");
