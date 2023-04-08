@@ -1,7 +1,8 @@
 // IMPORT DEPENDENCIES
 const express = require("express")
 const bodyParser = require("body-parser")
-const { Sequelize, sequelize } = require('../database/models')
+const sequelize = require('./utils/database')
+const User = require('./models/user')
 
 // IMPORT ROUTES
 
@@ -26,7 +27,7 @@ app.get('/', (req, res) => {
 });
 
 // CRUD ROUTES
-app.use('/users', require('./routes/users'))
+app.use('/users', require('./routes/users'));
 
 // HANDLE ERRORS
 app.use((err, req, res, next) => {
@@ -38,7 +39,8 @@ app.use((err, req, res, next) => {
 
 
 // SYNC DATABASE
-sequelize.sync({ force: false })
+sequelize
+.sync()
 .then(() => {
     console.log('Database Connected!')
     app.listen(port, () => {

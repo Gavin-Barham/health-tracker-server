@@ -1,4 +1,4 @@
-const Users = require('../../database/models/user');
+const Users = require('../models/user');
 
 // CRUD CONTROLLERS
 
