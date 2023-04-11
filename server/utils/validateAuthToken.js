@@ -16,10 +16,6 @@ function authorize(req, res, next) {
     return res.status(401).send('Unauthorized: token does not match');
   }
 
-  // if (payload.exp < Date.now() / 1000 || payload.iss !== 'myapp' || payload.aud !== 'myapi') {
-  //   return res.status(401).send('Unauthorized');
-  // }
-
   req.user = payload;
 
   next();
