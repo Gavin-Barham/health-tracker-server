@@ -7,7 +7,7 @@ const Nutrition = require('./nutrition');
 const Medical = require('./medical');
 
 // DEFINE USER MODEL
-const User = DB.define('user',{
+const Users = DB.define('users',{
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
@@ -37,11 +37,11 @@ const User = DB.define('user',{
 })
 
 // DEFINE USER  MODEL ASSOCIATIONS
-User.hasMany(Nutrition, { onDelete: 'cascade', hooks: true });
-Nutrition.belongsTo(User, {foreignKey: 'user_id'});
-User.hasMany(Medical, { onDelete: 'cascade', hooks: true });
-Nutrition.belongsTo(User, {foreignKey: 'user_id'});
+Users.hasMany(Nutrition, { onDelete: 'cascade', hooks: true });
+Nutrition.belongsTo(Users, {foreignKey: 'user_id'});
+Users.hasMany(Medical, { onDelete: 'cascade', hooks: true });
+Nutrition.belongsTo(Users, {foreignKey: 'user_id'});
 
 
 // EXPORT USER MODEL
-module.exports = User;
+module.exports = Users;
