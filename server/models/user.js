@@ -1,8 +1,12 @@
-const Sequelize = require('sequelize');
+// IMPORT DATABASE ORM
 const DB = require('../utils/database');
-// const Nutrition = require('./nutrition');
-// const Medical = require('./medical');
+const Sequelize = require('sequelize');
 
+// IMPORT MODELS
+const Nutrition = require('./nutrition');
+const Medical = require('./medical');
+
+// DEFINE USER MODEL
 const User = DB.define('user',{
     id: {
       type: Sequelize.INTEGER,
@@ -10,13 +14,34 @@ const User = DB.define('user',{
       allowNull: false,
       primaryKey: true
     },
-    username: Sequelize.STRING,
-    password: Sequelize.STRING,
-    height: Sequelize.INTEGER
+    username: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    height: {
+      type: Sequelize.INTEGER,
+      allowNull: true
+    },
+    target_cal: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
 })
 
-// User.hasMany(Nutrition);
-// User.hasMany(Medical);
+// DEFINE USER  MODEL ASSOCIATIONS
+User.hasMany(Nutrition, { onDelete: 'cascade', hooks: true });
+Nutrition.belongsTo(User, {foreignKey: 'user_id'});
+User.hasMany(Medical, { onDelete: 'cascade', hooks: true });
+Nutrition.belongsTo(User, {foreignKey: 'user_id'});
 
 
+// EXPORT USER MODEL
 module.exports = User;
