@@ -2,14 +2,9 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const sequelize = require('./utils/database')
-const User = require('./models/user')
-
-// IMPORT ROUTES
-
 
 
 const port = process.env.PORT || 3030
-
 const app = express()
 
 app.use(bodyParser.json())
@@ -23,10 +18,11 @@ app.use((req, res, next) => {
 
 // TEST ROUTE
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('Hello World!');
 });
 
 // CRUD ROUTES
+app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
 
 // HANDLE ERRORS
@@ -39,14 +35,13 @@ app.use((err, req, res, next) => {
 
 
 // SYNC DATABASE
-sequelize
-.sync()
-.then(() => {
-    console.log('Database Connected!')
-    app.listen(port, () => {
-        console.log(`server running on port: ${port} 
-            live at: http://localhost:${port}`
-                );
+sequelize.sync({force:true})
+    .then(() => {
+        console.log('Database Connected!')
+        app.listen(port, () => {
+            console.log(`server running on port: ${port} 
+                live at: http://localhost:${port}`
+            );
+        })
     })
-})
 .catch(e => console.error(e))
