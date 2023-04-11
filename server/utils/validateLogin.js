@@ -1,7 +1,7 @@
 module.exports = function loginValidate(req) {
     const { email, password } = req;
   
-    // Check if email is present and in a valid format
+    // CHECK IF EMAIL IS PRESENT AND IN A VALID FORMAT
     if (!email || !email.includes("@")) {
       return {
         error: true,
@@ -10,7 +10,7 @@ module.exports = function loginValidate(req) {
     };
     }
   
-    // Check if password is present and at least 8 characters long
+    // CHECK IF PASSWORD IS AT LEAST 8 CHARACTERS
     else if (!password || password.length < 8) {
       return {
         error: true,
