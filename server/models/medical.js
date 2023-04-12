@@ -1,5 +1,5 @@
 // IMPORT DATABASE ORM
-const DB = require('../../server/utils/database');
+const DB = require('./database');
 const Sequelize = require('sequelize');
 
 

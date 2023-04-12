@@ -1,7 +1,7 @@
 const controllers = require('../controllers/users');
 const express = require('express');
 const router = express.Router();
-const validateAuthToken = require('../utils/validateAuthToken');
+const validateAuthToken = require('../middleware/validateJWT');
 
 // ROUTES FOR /users
 router.get('/', validateAuthToken, controllers.getAllUsers); //GET ALL USERS

@@ -1,7 +1,8 @@
 // IMPORT DEPENDENCIES
 const express = require("express")
 const bodyParser = require("body-parser")
-const sequelize = require('./utils/database')
+const sequelize = require('./models/database')
+const cookieParser = require('cookie-parser')
 
 
 const port = process.env.PORT || 3030
@@ -15,6 +16,8 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
     next();
 })
+
+app.use(cookieParser());
 
 // TEST ROUTE
 app.get('/', (req, res) => {

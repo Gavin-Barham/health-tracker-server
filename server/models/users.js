@@ -1,5 +1,5 @@
 // IMPORT DATABASE ORM
-const DB = require('../utils/database');
+const DB = require('./database');
 const Sequelize = require('sequelize');
 
 // IMPORT MODELS
@@ -34,6 +34,10 @@ const Users = DB.define('users',{
       type: Sequelize.STRING,
       allowNull: true
     },
+    refresh_token: {
+      type: Sequelize.STRING,
+      allowNull: true
+    }
 })
 
 // DEFINE USER  MODEL ASSOCIATIONS
