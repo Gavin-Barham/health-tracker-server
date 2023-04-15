@@ -1,26 +1,50 @@
 // IMPORT DATABASE ORM
-const DB = require('./database');
+const DB = require('../utils/database');
 const Sequelize = require('sequelize');
 
 
 // DEFINE NUTRITION MODEL
-  const Nutrition = DB.define('nutrition', {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true
+const Nutrition = DB.define('nutrition', {
+    date: {
+        type: Sequelize.DATE,
+        primaryKey: true,
+        allowNull: false
     },
-    date: Sequelize.DATEONLY,
-    daily_steps: Sequelize.INTEGER,
-    first_meal_cal: Sequelize.INTEGER,
-    first_meal_time: Sequelize.TIME,
-    second_meal_cal: Sequelize.INTEGER,
-    second_meal_time: Sequelize.TIME,
-    snack_cal: Sequelize.ARRAY(Sequelize.INTEGER),
-    exercise_cal: Sequelize.INTEGER,
-    exercise_time: Sequelize.ARRAY(Sequelize.TIME)
-});
+    daily_steps: { 
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    first_meal_cal: { 
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    first_meal_time: { 
+        type: Sequelize.TIME,
+        allowNull: true
+    },
+    second_meal_cal: { 
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    second_meal_time: { 
+        type: Sequelize.TIME,
+        allowNull: true
+    },
+    snack_cal: { 
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
+        allowNull: true
+    },
+    exercise_cal: { 
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    exercise_time: { 
+        type: Sequelize.ARRAY(Sequelize.TIME),
+        allowNull: true
+    }
+,});
 
 
-// EXPORT NUTRITION MODEL
+
 module.exports = Nutrition;
   
