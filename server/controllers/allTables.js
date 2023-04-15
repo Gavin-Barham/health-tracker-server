@@ -10,7 +10,7 @@ const {  Op  } = require("sequelize");
 // GET ALL MEDICAL AND NUTRITIONAL BY DATE
 exports.getAllByDate = (req, res) => {
     const id = req.params.id;
-    Users.findByPk({id : id})
+    Users.findByPk(id)
     .then( user => {
         if (!user) {
             return res.status(404).json({ message: 'user not found'})
