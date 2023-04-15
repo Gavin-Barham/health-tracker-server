@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 // IMPORT CONTROLLERS
-const {  getAllUsers, deleteUserById} = require('../controllers/users');
+const {  updateUserById, deleteUserById} = require('../controllers/users');
 const {  createMedical, getMedicalByDate, updateMedical } = require('../controllers/medical');
 const {  createNutrition, getNutritionByDate, updateNutrition } = require('../controllers/nutrition');
 const {  getAllByDate  } = require('../controllers/allTables');
 
 
 // ROUTES FOR /users
-router.get('/', getAllUsers);
+router.put('/:id', updateUserById);
 router.delete('/:id', deleteUserById);
 
 // ROUTES FOR /users/medical
