@@ -1,5 +1,5 @@
 // IMPORT DATABASE ORM
-const DB = require('./database');
+const DB = require('../utils/database');
 const Sequelize = require('sequelize');
 
 // IMPORT MODELS
@@ -47,5 +47,4 @@ Users.hasMany(Medical, { onDelete: 'cascade', hooks: true });
 Nutrition.belongsTo(Users, {foreignKey: 'user_id'});
 
 
-// EXPORT USER MODEL
 module.exports = Users;

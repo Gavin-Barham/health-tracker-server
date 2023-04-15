@@ -1,25 +1,49 @@
 // IMPORT DATABASE ORM
-const DB = require('./database');
+const DB = require('../utils/database');
 const Sequelize = require('sequelize');
 
 
 // DEFINE MEDICAL MODEL
 const Medical = DB.define('medical', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true
-  },
-  date: Sequelize.DATEONLY,
-  oxygen: Sequelize.STRING,
-  heart_rate: Sequelize.STRING,
-  blood_pressure: Sequelize.STRING,
-  blood_glucose: Sequelize.STRING,
-  weight: Sequelize.STRING,
-  morning_meds: Sequelize.TIME,
-  noon_meds: Sequelize.TIME,
-  evening_meds: Sequelize.TIME
+    date: {
+        type: Sequelize.DATE,
+        primaryKey: true,
+        allowNull: false
+    },
+    oxygen: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    heart_rate: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    blood_pressure: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    blood_glucose: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    weight: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    morning_meds: {
+        type: Sequelize.TIME,
+        allowNull: true
+    },
+    noon_meds: {
+        type: Sequelize.TIME,
+        allowNull: true
+    },
+    evening_meds: {
+        type: Sequelize.TIME,
+        allowNull: true
+    }
 })
 
 
-// EXPORT MEDICAL MODEL
+
 module.exports = Medical;

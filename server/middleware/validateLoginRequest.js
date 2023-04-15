@@ -1,4 +1,4 @@
-module.exports = function loginValidate(req) {
+module.exports = function validateLogin(req) {
     const { email, password } = req;
   
     // CHECK IF EMAIL IS PRESENT AND IN A VALID FORMAT
@@ -14,13 +14,13 @@ module.exports = function loginValidate(req) {
     else if (!password || password.length < 8) {
       return {
         error: true,
-        status: 400,
+        status: 403,
         message: "Invalid password" 
     };
     }
-    return {
+    else return {
         error: false,
         status: 200,
-        message: "Valid credentials"
+        message: "Password is valid"
     }
   }

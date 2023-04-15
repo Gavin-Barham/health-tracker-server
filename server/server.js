@@ -1,41 +1,45 @@
 // IMPORT DEPENDENCIES
 const express = require("express")
 const bodyParser = require("body-parser")
-const sequelize = require('./models/database')
 const cookieParser = require('cookie-parser')
+
+// IMPORT DATABASE
+const sequelize = require('./utils/database')
+
+// IMPORT MIDDLEWARE
+const validateAuthToken = require('./middleware/validateJWT');
+const handleErrors = require('./middleware/handleErrors');
+
+// IMPORT ROUTES
+const handleAuthRoutes = require('./routes/auth')
+const handleUsersRoutes = require('./routes/users')
 
 
 const port = process.env.PORT || 3030
 const app = express()
 
+// PARSE REUESTS AND COOKIES / SET RESPONSE HEADER
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
     next();
 })
-
 app.use(cookieParser());
 
-// TEST ROUTE
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
 
-// CRUD ROUTES
-app.use('/auth', require('./routes/auth'));
-app.use('/users', require('./routes/users'));
+// CRUD ROUTES //
+
+// OPEN ENDPOINTS
+app.use('/auth', handleAuthRoutes);
+
+// RESTRICTED ENDPOINTS
+app.use(validateAuthToken);
+app.use('/users', handleUsersRoutes);
 
 // HANDLE ERRORS
-app.use((err, req, res, next) => {
-    console.log(err);
-    const status = err.statusCode || 500;
-    const message = err.message;
-    res.status(status).json({ message: message });
-})
-
+app.use(handleErrors);
 
 // SYNC DATABASE
 sequelize.sync({force:true})
@@ -47,4 +51,4 @@ sequelize.sync({force:true})
             );
         })
     })
-.catch(e => console.error(e))
+    .catch(e => console.error(e))
