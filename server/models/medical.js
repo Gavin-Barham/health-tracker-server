@@ -15,7 +15,7 @@ const Medical = DB.define('medical', {
         allowNull: true
     },
     heart_rate: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: true
     },
     blood_pressure: {
@@ -23,23 +23,23 @@ const Medical = DB.define('medical', {
         allowNull: true
     },
     blood_glucose: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: true
     },
     weight: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: true
     },
     morning_meds: {
-        type: Sequelize.TIME,
+        type: Sequelize.STRING,
         allowNull: true
     },
     noon_meds: {
-        type: Sequelize.TIME,
+        type: Sequelize.STRING,
         allowNull: true
     },
     evening_meds: {
-        type: Sequelize.TIME,
+        type: Sequelize.STRING,
         allowNull: true
     }
 })

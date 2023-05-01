@@ -6,6 +6,7 @@ const verifyUserExists = require('../middleware/verifyUserExists');
 const {setMedicalFields} = require('../middleware/setFields');
 
 // MODELS
+const Users = require('../models/users');
 const Medical = require('../models/medical');
 
 // CRUD CONTROLLERS
@@ -40,19 +41,31 @@ exports.createMedical = (req, res) => {
 // GET ALL MEDICAL BY DATE RANGE
 exports.getMedicalByDate = (req, res) => {
     const id = req.params.id;
-    const {startDate, endDate} = req.body;
+    const startDate = req.query.startDate
+    const endDate = req.query.endDate;
     verifyUserExists(id)
-    Medical.findAll({
+    Users.findAll({
         where: {
-            userId: id,
-            date: {[Op.between]: [startDate, endDate]}
+            id: id
+        },
+        include: [{
+            model: Medical,
+            where: { date: { [Op.between]: [startDate, endDate] }, userId: id },
+            required: false,
+            attributes: {
+                exclude: ['userId', 'user_id', 'updatedAt', 'createdAt']
+            }
+        }
+        ],
+        attributes: {
+            exclude: ['password', 'email', 'refresh_token', 'updatedAt', 'createdAt']
         }
     })
     .then(rows => {
         if (!rows) {
-            res.status(404).json({ message: 'no medicals found'})
+            res.status(404).send({ message: 'no medicals found'})
         }
-        res.status(200).send({medical: rows});
+        res.status(200).send({message: 'OK', rows: rows});
     })
 }
 
@@ -60,11 +73,10 @@ exports.getMedicalByDate = (req, res) => {
 exports.updateMedical = (req, res) => {
     const id = req.params.id;
     const updatedMedical = req.body;
-    let date = updatedMedical.date;
+    let date = updatedMedical.date = new Date(updatedMedical.date);
     if (!date) {
-        return res.status(400).json({ message: 'date is required'})
+        return res.status(400).send({ message: 'date is required'})
     }
-    date = new Date(date);
     verifyUserExists(id)
     Medical.findOne({
         where: {
@@ -74,7 +86,7 @@ exports.updateMedical = (req, res) => {
     })
     .then(row => {
         if (!row) {
-            return res.status(404).json({ message:'Record not found'})
+            return res.status(404).send({ message:'Record not found'})
         }
         return setMedicalFields(updatedMedical, row)
     })
@@ -86,7 +98,12 @@ exports.updateMedical = (req, res) => {
             }
         })
        .then(updatedRow => {
-            res.status(200).send({message: "medical updated", medical: updatedRow});
+            if (!updatedRow) {
+                res.status(404).send({message: "row not found"})
+            }
+            else {
+                res.status(200).send({message: "medical updated", rows: updatedRow});
+            }
         })
         .catch(err => {
             res.status(500).send({message: err.message});

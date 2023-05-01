@@ -6,6 +6,7 @@ const verifyUserExists = require('../middleware/verifyUserExists');
 const {setNutritionFields} = require('../middleware/setFields');
 
 // MODELS
+const Users = require('../models/users');
 const Nutrition = require('../models/nutrition');
 
 
@@ -31,7 +32,7 @@ exports.createNutrition = (req, res) => {
     })
     Nutrition.create(reqObj)
     .then(nutrition => {
-        res.status(201).send({message: "New nutrition row created", nutrition: nutrition});
+        res.status(201).send({message: "New nutrition row created", rows: nutrition});
     })
     .catch(err => {
         res.status(500).send({message: err.message});
@@ -43,17 +44,28 @@ exports.getNutritionByDate = (req, res) => {
     const id = req.params.id;
     const {startDate, endDate} = req.body;
     verifyUserExists(id)
-    Nutrition.findAll({
+    Users.findAll({
         where: {
-            userId: id,
-            date: {[Op.between]: [startDate, endDate]}
+            id: id
+        },
+        include: [{
+            model: Nutrition,
+            where: { date: { [Op.between]: [startDate, endDate] }, userId: id },
+            required: false,
+            attributes: {
+                exclude: ['userId', 'user_id', 'updatedAt', 'createdAt']
+            }
+        }
+        ],
+        attributes: {
+            exclude: ['password', 'email', 'refresh_token', 'updatedAt', 'createdAt']
         }
     })
     .then(rows => {
         if (!rows) {
             res.status(404).json({ message: 'no records found'})
         }
-        res.status(200).send({nutrition: rows});
+        res.status(200).send({message: 'OK', rows: rows});
     })
     .catch(err => {
         res.status(500).send({message: err.message});
@@ -92,7 +104,7 @@ exports.updateNutrition = (req, res) => {
             }
         })
        .then(updatedRow => {
-            res.status(200).send({message: "nutrition updated", nutrition: updatedRow});
+            res.status(200).send({message: "nutrition updated", rows: updatedRow});
         })
         .catch(err => {
             res.status(500).send({message: err.message});

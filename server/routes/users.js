@@ -23,6 +23,6 @@ router.post('/nutrition/:id', createNutrition);
 router.put('/nutrition/:id', updateNutrition);
 
 
-router.get('/all/:id', getAllByDate);
+router.get('/all/:id/', getAllByDate);
 
 module.exports = router;

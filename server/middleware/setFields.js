@@ -15,13 +15,13 @@ function setNutritionFields(reqObj, dbRowObj) {
 function setMedicalFields(reqObj, dbRowObj) {
     let medicalFields = {
         oxygen: reqObj.oxygen || dbRowObj.oxygen,
-        heart_rate: reqObj.heartRate || dbRowObj.heart_rate,
+        heart_rate: reqObj.heart_rate || dbRowObj.heart_rate,
         blood_pressure: reqObj.bloodPressure || dbRowObj.blood_pressure,
-        blood_glucose: reqObj.bloodGlucose || dbRowObj.blood_glucose,
+        blood_glucose: reqObj.blood_glucose || dbRowObj.blood_glucose,
         weight: reqObj.weight || dbRowObj.weight,
-        morning_meds: reqObj.morningMeds || dbRowObj.morning_meds,
-        noon_meds: reqObj.noonMeds || dbRowObj.noon_meds,
-        evening_meds: reqObj.eveningMeds || dbRowObj.evening_meds,
+        morning_meds: reqObj.morning_meds || dbRowObj.morning_meds,
+        noon_meds: reqObj.noon_meds || dbRowObj.noon_meds,
+        evening_meds: reqObj.evening_meds || dbRowObj.evening_meds,
     }
     return medicalFields
 }
