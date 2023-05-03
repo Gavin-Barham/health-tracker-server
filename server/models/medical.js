@@ -19,28 +19,46 @@ const Medical = DB.define('medical', {
         allowNull: true
     },
     blood_pressure: {
-        type: Sequelize.STRING,
-        allowNull: true
+        type: Sequelize.JSON,
+        allowNull: true,
+        validate: {
+            isArrayOfObjects: function (value) {
+                if (value === null) return;
+                if (!Array.isArray(value)) throw new Error('Blood pressure must be an array.');
+                    value.forEach(bp => {
+                    if (!bp.hasOwnProperty('sys') || !bp.hasOwnProperty('dias')) {
+                    throw new Error('Blood pressure must contain "sys" and "dias" values.');
+                    }
+                    if (typeof bp.sys !== 'number' || typeof bp.dias !== 'number') {
+                    throw new Error('Blood pressure "sys" and "dias" values must be numbers.');
+                    }
+                
+                 })
+            }
+        }
     },
     blood_glucose: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.JSON,
         allowNull: true
     },
-    weight: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-    },
-    morning_meds: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    noon_meds: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    evening_meds: {
-        type: Sequelize.STRING,
-        allowNull: true
+    medication: {
+        type: Sequelize.JSON,
+        allowNull: true,
+        validate: {
+            isArrayOfObjects: function (value) {
+                if (value === null) return;
+                if (!Array.isArray(value)) throw new Error('Medication must be an array.');
+                    value.forEach(med => {
+                    if (
+                        typeof med !== 'string' ||
+                        typeof med !== 'string' || 
+                        typeof med !== 'string') {
+                    throw new Error('Blood pressure "morning", "noon" and "night" values must be numbers.');
+                    }
+                
+                 })
+            }
+        }
     }
 })
 

@@ -5,6 +5,7 @@ const Sequelize = require('sequelize');
 // IMPORT MODELS
 const Nutrition = require('./nutrition');
 const Medical = require('./medical');
+const Exercise = require('./exercise');
 
 // DEFINE USER MODEL
 const Users = DB.define('users',{
@@ -45,6 +46,8 @@ Users.hasMany(Nutrition, { onDelete: 'cascade', hooks: true });
 Nutrition.belongsTo(Users, {foreignKey: 'user_id'});
 Users.hasMany(Medical, { onDelete: 'cascade', hooks: true });
 Nutrition.belongsTo(Users, {foreignKey: 'user_id'});
+Users.hasMany(Exercise, { onDelete: 'cascade', hooks: true });
+Exercise.belongsTo(Users, {foreignKey: 'user_id'});
 
 
 module.exports = Users;

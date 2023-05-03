@@ -17,6 +17,10 @@ exports.createNutrition = (req, res) => {
     const reqObj = req.body;
     const userId = req.params.id
     reqObj.userId = userId;
+    reqObj.breakfast = null;
+    reqObj.lunch = null;
+    reqObj.dinner = null;
+    reqObj.snacks = null;
     verifyUserExists(userId)
 
     Nutrition.findOne({

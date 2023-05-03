@@ -5,6 +5,7 @@ const router = express.Router();
 const {  updateUserById, deleteUserById} = require('../controllers/users');
 const {  createMedical, getMedicalByDate, updateMedical } = require('../controllers/medical');
 const {  createNutrition, getNutritionByDate, updateNutrition } = require('../controllers/nutrition');
+const {  createExercise, getExerciseByDate, updateExercise } = require('../controllers/exercise');
 const {  getAllByDate  } = require('../controllers/allTables');
 
 
@@ -22,6 +23,10 @@ router.get('/nutrition/:id', getNutritionByDate);
 router.post('/nutrition/:id', createNutrition);
 router.put('/nutrition/:id', updateNutrition);
 
+// ROUTES FOR /users/excercise
+router.get('/exercise/:id', getExerciseByDate);
+router.post('/exercise/:id', createExercise);
+router.put('/exercise/:id', updateExercise);
 
 router.get('/all/:id/', getAllByDate);
 

@@ -10,39 +10,71 @@ const Nutrition = DB.define('nutrition', {
         primaryKey: true,
         allowNull: false
     },
-    daily_steps: { 
-        type: Sequelize.INTEGER,
-        allowNull: true
+    breakfast: { 
+        type: Sequelize.JSON,
+        allowNull: true,
+        validate: {
+            isArrayOfObjects: function (value) {
+                if (value === null) return;
+                if (!Array.isArray(value)) throw new Error('breakfast must be an array.');
+                    value.forEach(med => {
+                    if (typeof med.calories !== 'number' || typeof med.food !== 'string') {
+                        throw new Error('Breakfast "calories" values must be numbers and  "food"  values must be strings');
+                    }
+                
+                 })
+            }
+        }
     },
-    first_meal_cal: { 
-        type: Sequelize.INTEGER,
-        allowNull: true
+    lunch: { 
+        type: Sequelize.JSON,
+        allowNull: true,
+        validate: {
+            isArrayOfObjects: function (value) {
+                if (value === null) return;
+                if (!Array.isArray(value)) throw new Error('lunch must be an array.');
+                    value.forEach(med => {
+                    if (typeof med.calories !== 'number' || typeof med.food !== 'string') {
+                        throw new Error('Lunch "calories" values must be numbers and  "food"  values must be strings');
+                    }
+                
+                 })
+            }
+        }
     },
-    first_meal_time: { 
-        type: Sequelize.TIME,
-        allowNull: true
+    dinner: { 
+        type: Sequelize.JSON,
+        allowNull: true,
+        validate: {
+            isArrayOfObjects: function (value) {
+                if (value === null) return;
+                if (!Array.isArray(value)) throw new Error('dinner must be an array.');
+                    value.forEach(med => {
+                    if (typeof med.calories !== 'number' || typeof med.food !== 'string') {
+                        throw new Error('Dinner "calories" values must be numbers and  "food"  values must be strings');
+                    }
+                
+                 })
+            }
+        }
     },
-    second_meal_cal: { 
-        type: Sequelize.INTEGER,
-        allowNull: true
+    snacks: { 
+        type: Sequelize.JSON,
+        allowNull: true,
+        validate: {
+            isArrayOfObjects: function (value) {
+                if (value === null) return;
+                if (!Array.isArray(value)) throw new Error('Snacks must be an array.');
+                    value.forEach(med => {
+                    if (typeof med.calories !== 'number' || typeof med.food !== 'string') {
+                        throw new Error('Snacks "calories" values must be numbers and  "food"  values must be strings');
+                    }
+                
+                 })
+            }
+        }
     },
-    second_meal_time: { 
-        type: Sequelize.TIME,
-        allowNull: true
-    },
-    snack_cal: { 
-        type: Sequelize.ARRAY(Sequelize.INTEGER),
-        allowNull: true
-    },
-    exercise_cal: { 
-        type: Sequelize.INTEGER,
-        allowNull: true
-    },
-    exercise_time: { 
-        type: Sequelize.ARRAY(Sequelize.TIME),
-        allowNull: true
-    }
-,});
+});
 
 
 

@@ -2,12 +2,13 @@
 const Users = require("../models/users");
 const Medical = require ("../models/medical");
 const Nutrition = require ("../models/nutrition");
+const Exercise = require ("../models/exercise");
 const {  Op  } = require("sequelize");
 
 
 // CRUD CONTROLLERS
 
-// GET ALL MEDICAL AND NUTRITIONAL BY DATE
+// GET ALL TABLES BY DATE
 exports.getAllByDate = (req, res) => {
     const id = req.params.id;
     let startDate = req.query.startDate;
@@ -40,7 +41,15 @@ exports.getAllByDate = (req, res) => {
             required: false,
             attributes: {
               exclude: ["userId", "user_id", "updatedAt", "createdAt"],
-            },
+            }
+          },
+          {
+            model: Exercise,
+            where: { date: { [Op.between]: [startDate, endDate] }, userId: id },
+            required: false,
+            attributes: {
+              exclude: ["userId", "user_id", "updatedAt", "createdAt"],
+            }
           },
         ],
         attributes: {
