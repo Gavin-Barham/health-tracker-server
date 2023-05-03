@@ -3,26 +3,25 @@ const { Op } = require('sequelize');
 
 // MIDDLEWARE
 const verifyUserExists = require('../middleware/verifyUserExists');
-const {setMedicalFields} = require('../middleware/setFields');
+const {setExerciseFields} = require('../middleware/setFields');
 
 // MODELS
 const Users = require('../models/users');
-const Medical = require('../models/medical');
+const Exercise = require('../models/exercise');
 
 // CRUD CONTROLLERS
 
 // CREATE MEDICAL ROW
-exports.createMedical = (req, res) => {
-    const newMedical = req.body;
+exports.createExercise = (req, res) => {
+    const newExercise = req.body;
     const userId = req.params.id
-    newMedical.userId = userId;
-    newMedical.blood_pressure = null;
-    newMedical.medication = null;
+    newExercise.userId = userId;
+    newExercise.blood_pressure = null;
     verifyUserExists(userId)
-    Medical.findOne({
+    Exercise.findOne({
         where: {
             userId: userId,
-            date: new Date(newMedical.date)
+            date: new Date(newExercise.date)
         }
     })
     .then(row => {
@@ -30,10 +29,10 @@ exports.createMedical = (req, res) => {
             return res.status(400).json({ message: 'date already exists'})
         }
 
-        return Medical.create(newMedical)
+        return Exercise.create(newExercise)
     })
     .then(row => {
-        res.status(201).send({message: "New medical row created", medical: row});
+        res.status(201).send({message: "New medical row created", exercise: row});
     })
     .catch(err => {
         res.status(500).send({message: err.message});
@@ -41,7 +40,7 @@ exports.createMedical = (req, res) => {
 }
 
 // GET ALL MEDICAL BY DATE RANGE
-exports.getMedicalByDate = (req, res) => {
+exports.getExerciseByDate = (req, res) => {
     const id = req.params.id;
     const startDate = req.query.startDate
     const endDate = req.query.endDate;
@@ -51,7 +50,7 @@ exports.getMedicalByDate = (req, res) => {
             id: id
         },
         include: [{
-            model: Medical,
+            model: Exercise,
             where: { date: { [Op.between]: [startDate, endDate] }, userId: id },
             required: false,
             attributes: {
@@ -65,22 +64,22 @@ exports.getMedicalByDate = (req, res) => {
     })
     .then(rows => {
         if (!rows) {
-            res.status(404).send({ message: 'no medicals found'})
+            res.status(404).send({ message: 'no exercise rows found'})
         }
         res.status(200).send({message: 'OK', rows: rows});
     })
 }
 
 //  UPDATE MEDICAL
-exports.updateMedical = (req, res) => {
+exports.updateExercise = (req, res) => {
     const id = req.params.id;
-    const updatedMedical = req.body;
-    let date = updatedMedical.date = new Date(updatedMedical.date);
+    const updatedExercise = req.body;
+    let date = updatedExercise.date = new Date(updatedExercise.date);
     if (!date) {
         return res.status(400).send({ message: 'date is required'})
     }
     verifyUserExists(id)
-    Medical.findOne({
+    Exercise.findOne({
         where: {
             date: date,
             userId: id
@@ -90,10 +89,10 @@ exports.updateMedical = (req, res) => {
         if (!row) {
             return res.status(404).send({ message:'Record not found'})
         }
-        return setMedicalFields(updatedMedical, row)
+        return setExerciseFields(updatedExercise, row)
     })
     .then( updatedFields => {
-        Medical.update(updatedFields, {
+        Exercise.update(updatedFields, {
             where: {
                 userId: id,
                 date: date
@@ -104,7 +103,7 @@ exports.updateMedical = (req, res) => {
                 res.status(404).send({message: "row not found"})
             }
             else {
-                res.status(200).send({message: "medical updated", rows: updatedRow});
+                res.status(200).send({message: "exercise updated", rows: updatedRow});
             }
         })
         .catch(err => {

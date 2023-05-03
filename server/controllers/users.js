@@ -27,7 +27,7 @@ exports.updateUserById = (req, res) => {
        .then(user => {
             res.status(200).json({
                 message: 'user updated successfully',
-                user: user
+                rows: user
             });
         })
        .catch(err => res.status(500).json({message: err.message}))
@@ -56,8 +56,8 @@ exports.deleteUserById = (req, res) => {
     .then(user => {
         res.status(200).json({
             message: 'user deleted successfully',
-            user: user
+            rows: user
         });
     })
-    .catch(err => console.error(err));
+    .catch(err => res.status(500).json({message: err.message}));
 }
